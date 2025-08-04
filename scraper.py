@@ -3,34 +3,33 @@ import time
 
 def fetch_case_data(case_type, case_number, filing_year):
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)  # Set headless=True later
+        browser = p.chromium.launch(headless=False)
         page = browser.new_page()
-        page.goto("https://delhihighcourt.nic.in/case.asp")
+        page.goto("https://dhcmisc.nic.in/pcase/guiCaseWise.php")
 
-        # Fill in the form
-        page.select_option("select[name='CT']",
-                           label=case_type)  # e.g., 'W.P. (C)' or 'C.M.(M)'
+        # Fill in form fields
+        page.select_option("select[name='CT']", label=case_type)
         page.fill("input[name='CN']", case_number)
         page.fill("input[name='CY']", filing_year)
 
-        # ❗ Wait for user to solve CAPTCHA manually
-        print("Please solve CAPTCHA in the browser. Waiting...")
-        time.sleep(30)
+        # Wait for user to solve CAPTCHA manually
+        print("🔐 Please solve the CAPTCHA in the browser...")
+        time.sleep(30)  # or smarter wait as shown earlier
 
         # Submit the form
         page.click("input[type='submit']")
 
-        # Wait for results
+        # Wait for results to load
         page.wait_for_timeout(5000)
 
+        # Get page content
         html = page.content()
 
-        # Extract data using Playwright or BeautifulSoup
-        # For demo, we return mock data
+        # Example data extraction (replace with actual selectors)
         data = {
-            "parties": "N/A",
-            "filing_date": "N/A",
-            "next_hearing": "N/A",
+            "parties": page.locator("selector-for-party-name").text_content(),
+            "filing_date": page.locator("selector-for-filing-date").text_content(),
+            "next_hearing": page.locator("selector-for-next-hearing").text_content(),
             "latest_order_link": "https://delhihighcourt.nic.in"  # placeholder
         }
 
