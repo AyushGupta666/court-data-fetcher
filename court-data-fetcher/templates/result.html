@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Case Result</title>
+</head>
+<body class="p-5">
+    <div class="container">
+        <h3>Case Details</h3>
+        <ul>
+            <li><strong>Parties:</strong> {{ data.parties }}</li>
+            <li><strong>Filing Date:</strong> {{ data.filing_date }}</li>
+            <li><strong>Next Hearing:</strong> {{ data.next_hearing }}</li>
+            <li><strong>Order PDF:</strong> <a href="{{ data.latest_order_link }}" target="_blank">Download</a></li>
+        </ul>
+        <a href="/">Back</a>
+    </div>
+</body>
+</html>
